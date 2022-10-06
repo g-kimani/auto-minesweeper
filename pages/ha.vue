@@ -1,11 +1,11 @@
 <template>
-  <game-grid :size="10" :bomb-count="10" />
+  <game-manager :size="10" :bomb-count="10" />
 </template>
 
 <script>
-import GameGrid from '~/components/GameGrid.vue'
+import GameManager from '~/components/GameManager.vue'
 export default {
-  components: { GameGrid },
+  components: { GameManager },
 }
 </script>
 

@@ -49,7 +49,7 @@ export default {
     },
     hiddenCellBorder() {
       const cells = []
-      this.eachCell((x, y, value) => {
+      this.forEachCell((x, y, value) => {
         if (value == null) {
           this.eachAdjacentCell(x, y, (newX, newY, value) => {
             if (
@@ -154,6 +154,16 @@ export default {
       }
       return grid
     },
+    handleClick(action, x, y) {
+      if (action === 0) {
+        if (this.reveal(x, y) === 0) {
+          this.endGame()
+        }
+      } else if (action === 1) {
+        this.toggleFlag(x, y)
+      }
+      this.$emit('gridClicked')
+    },
     draw() {
       let table = document.getElementById('game-grid')
       table = this.clearTable(table)
@@ -162,7 +172,7 @@ export default {
         row.classList.add('grid-row')
         for (let y = 0; y < this.size; y++) {
           const data = document.createElement('div')
-          data.addEventListener('click', (e) => this.reveal(x, y))
+          data.addEventListener('click', (e) => this.handleClick(0, x, y))
           data.classList.add('grid-cell')
           data.classList.add('hidden')
           // data.classList.add("card");
