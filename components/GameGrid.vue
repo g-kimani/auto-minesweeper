@@ -1,11 +1,29 @@
 <template>
   <v-container>
-    <div id="game-grid" class="v-card"></div>
+    <!-- <div id="game-grid" class="v-card"></div> -->
+    <div>
+      <v-row v-for="x in size" :key="x" no-gutters>
+        <v-col v-for="y in size" :key="y">
+          <!-- <v-card tile :class="(y + x) % 2 === 0 ? 'primary' : 'secondary'"
+            >{{ x - 1 }},{{ y - 1 }}</v-card
+          > -->
+          <!-- <div class=""></div> -->
+          <grid-cell
+            ref="ha"
+            :cell="{ x, y }"
+            class="fill-height"
+            @click="log(x - 1, y - 1)"
+          />
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 
 <script>
+import GridCell from './GridCell.vue'
 export default {
+  components: { GridCell },
   props: {
     size: { type: Number, required: true },
     bombCount: { type: Number, required: true },
@@ -22,9 +40,14 @@ export default {
   computed: {},
   mounted() {
     this.placeBombs()
-    this.draw()
+    // this.draw()
   },
   methods: {
+    log(x, y) {
+      console.log(x, y)
+      console.log(x * 10 + y)
+      console.log(this.$refs.ha[x * 10 + y])
+    },
     inBounds(x, y) {
       if (x < 0) return false
       if (y < 0) return false
@@ -281,50 +304,7 @@ table {
   display: flex;
   height: 100%;
 }
-.grid-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 20px;
-  min-height: 20px;
-  width: 100%;
-  height: 100%;
-  border: 1px solid black;
-  font-weight: 700;
-}
 
-.value-1 {
-  color: rgb(36, 149, 214);
-}
-.value-2 {
-  color: rgb(35, 236, 172);
-}
-.value-3 {
-  color: rgb(235, 186, 65);
-}
-.value-4 {
-  color: rgb(218, 93, 93);
-}
-.value-5 {
-  color: rgb(199, 54, 52);
-}
-.value-6 {
-  color: rgb(153, 42, 41);
-}
-.value-7 {
-  color: rgb(105, 27, 26);
-}
-.value-8 {
-  color: rgb(59, 12, 11);
-}
-.hidden {
-  background-color: aquamarine;
-  cursor: pointer;
-}
-.hidden:hover {
-  background-color: whitesmoke !important;
-  /* color: whitesmoke; */
-}
 /* tr {
   border: solid thin;
 } */
