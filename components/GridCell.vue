@@ -1,7 +1,30 @@
 <template>
-  <div>
-    <v-card :class="classList" flat tile ripple @click="$emit('click')">
-      {{ cell.value }}
+  <div class="fill-height">
+    <!-- <v-card
+      :class="classList"
+      flat
+      tile
+      ripple
+      height="100"
+      @click="$emit('click')"
+    >
+      {{ cell.value === 0 ? '0' : '1' }}
+    </v-card> -->
+    <v-card
+      flat
+      tile
+      ripple
+      height="100%"
+      col
+      :class="classList"
+      @click.left="$emit('reveal')"
+      @click.right.stop="flagged"
+    >
+      <v-icon v-if="cell.isFlagged" :color="focused ? 'black' : ''">
+        mdi-flag
+      </v-icon>
+      <v-icon v-else-if="cell.isBomb" v-show="showBomb">mdi-bomb</v-icon>
+      <span v-else>{{ cell.data }}</span>
     </v-card>
   </div>
 </template>
@@ -9,16 +32,28 @@
 <script>
 export default {
   props: {
-    cell: { type: Object, default: () => {} },
+    x: { type: Number, default: 0 },
+    y: { type: Number, default: 0 },
+    focused: { type: Boolean, default: false },
+    showBomb: { type: Boolean, default: false },
   },
   computed: {
+    cell() {
+      return this.$store.state.grid.cells[this.x][this.y]
+    },
     classList() {
       const classes = []
       classes.push('grid-cell')
-      if (!this.cell) return classes
       if (this.cell.isFlagged) classes.push('flagged')
-      if (this.cell.value) classes.push(`cell-value-${this.cell.value}`)
+      if (this.cell.data) classes.push(`cell-value-${this.cell.data}`)
+      if (this.focused) classes.push('focused')
       return classes
+    },
+  },
+  methods: {
+    flagged(event) {
+      event.preventDefault()
+      this.$emit('flagged')
     },
   },
 }
@@ -35,8 +70,15 @@ export default {
   height: 100%;
   border: 1px solid black;
   font-weight: 700;
+  // background-color: green;
 }
-
+.flagged {
+  background-color: aquamarine;
+}
+.focused {
+  background-color: beige;
+  color: black;
+}
 .cell-value-1 {
   color: rgb(36, 149, 214);
 }

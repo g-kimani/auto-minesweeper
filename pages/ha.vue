@@ -1,5 +1,7 @@
 <template>
-  <game-manager :size="10" :bomb-count="10" />
+  <div>
+    <game-manager />
+  </div>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card flat> {{ currentTime }} </v-card>
+    <v-card width="100%" height="100%" tile flat> {{ currentTime }} </v-card>
   </div>
 </template>
 
