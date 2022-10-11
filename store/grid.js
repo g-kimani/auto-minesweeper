@@ -2,7 +2,7 @@ import { set } from 'vue'
 
 const state = () => ({
   size: 5,
-  bombCount: 25,
+  bombCount: 5,
   cells: new Array(state.size).fill().map(() =>
     new Array(state.size).fill({
       x: 0,

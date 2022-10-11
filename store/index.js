@@ -8,7 +8,7 @@ export const actions = {
   showSnackbar({ commit }, payload) {
     commit('SET_SNACKBAR_ACTIVE', true)
     commit('SET_SNACKBAR_MESSAGE', payload)
-    commit('SET_SNACKBAR_TIMEOUT', calculateReadingSeconds(payload))
+    commit('SET_SNACKBAR_TIMEOUT', calculateStringTimeout(payload))
   },
 }
 
@@ -24,15 +24,9 @@ export const mutations = {
   },
 }
 
-// inspired by
-// https://infusion.media/content-marketing/how-to-calculate-reading-time/
-function calculateReadingSeconds(text) {
-  console.log(text)
-  const time = (text.split(' ').length / 200).toString()
-  const [min, sec] = time.split('.')
-  let secCalc = parseFloat(sec) * 0.6
-  if (secCalc > 30) {
-    secCalc = 60
-  }
-  return (min * 60 + secCalc) * 1000
+function calculateStringTimeout(text) {
+  const count = text.match(/\s/g)?.length
+  const timeout = count * 500 + 3000 / 2
+  console.log('timeout set for ', timeout)
+  return timeout
 }

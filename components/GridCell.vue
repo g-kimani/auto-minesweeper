@@ -13,7 +13,7 @@
       <v-icon v-if="cell.isFlagged" :color="focused ? 'black' : ''">
         mdi-flag
       </v-icon>
-      <v-icon v-else-if="cell.isBomb" v-show="showBomb">mdi-bomb</v-icon>
+      <v-icon v-if="cell.isBomb" v-show="showBomb">mdi-bomb</v-icon>
       <span v-else>{{ cell.data }}</span>
     </v-card>
   </div>
@@ -34,7 +34,11 @@ export default {
     classList() {
       const classes = []
       classes.push('grid-cell')
-      if (this.cell.isFlagged) classes.push('flagged')
+      if (
+        this.cell.isFlagged ||
+        (this.isFlagged && this.showBomb && this.cell.isBomb)
+      )
+        classes.push('flagged')
       if (this.cell.data) classes.push(`cell-value-${this.cell.data}`)
       if (this.focused) classes.push('focused')
       return classes

@@ -58,6 +58,7 @@ export default {
       this.$refs.timer.reset()
       this.gameOver = false
       this.gameStarted = false
+      this.$store.commit('SET_SNACKBAR_ACTIVE', false)
       this.resetGrid()
       this.buildGrid().then((r) => {
         this.placeBombs().then(() => {

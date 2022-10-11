@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="gameLoaded" :key="gridKey" class="game-grid">
+    <v-container v-if="gameLoaded" :key="gridKey" class="game-grid" fluid>
       <v-row
         v-for="(row, x) in cells"
         :key="x"
@@ -20,7 +20,8 @@
           </v-hover>
         </v-col>
       </v-row>
-    </div>
+      <snackbar-message />
+    </v-container>
     <div v-else>
       <v-container class="text-centre"> Loading grid </v-container>
     </div>
@@ -30,8 +31,9 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import GridCell from './GridCell.vue'
+import SnackbarMessage from './SnackbarMessage.vue'
 export default {
-  components: { GridCell },
+  components: { GridCell, SnackbarMessage },
   props: {
     disabled: { type: Boolean, default: false },
     showBombs: { type: Boolean, default: false },
@@ -51,7 +53,7 @@ export default {
     ...mapActions(['showSnackbar']),
     handleClick(action, x, y) {
       if (this.disabled) {
-        this.showSnackbar('Grid Disabled')
+        this.showSnackbar('Grid Disabled. Restart game by clicking avatar')
         return
       }
 
@@ -59,6 +61,9 @@ export default {
         this.$nextTick(() => {
           this.revealSection({ x, y }).then((r) => {
             if (r === 0) {
+              this.showSnackbar(
+                'Uh oh you hit a bomb!! Restart game by clicking avatar'
+              )
               this.$emit('hitBomb')
               this.gridKey++
             } else {
@@ -86,6 +91,7 @@ export default {
   flex-direction: column;
   width: 100%;
   height: 400px;
+  position: relative;
   min-width: 480px;
 }
 .grid-row {
