@@ -51,9 +51,10 @@ export default {
   },
   methods: {
     ...mapActions('grid', ['buildGrid', 'placeBombs', 'resetGrid']),
+    ...mapActions(['showSnackbar']),
+
     resetGame() {
       this.changeAvatar(0)
-      this.$refs.timer.stop()
       this.$refs.timer.reset()
       this.gameOver = false
       this.gameStarted = false
@@ -72,7 +73,6 @@ export default {
         this.gameStarted = true
       }
       this.checkWin()
-      // this.$refs.timer.start()
     },
     initialiseInput() {
       this.$refs.grid.$el.addEventListener('mouseover', this.avatarSurprised)
@@ -115,21 +115,22 @@ export default {
       }
     },
     checkWin() {
-      console.log(this.flagCount, this.bombCount)
-      console.log(this.flaggedCells)
-      // console.log(this.bombCount);
       if (this.flagCount === this.bombCount) {
-        console.log('nearly all flags placed')
         if (this.flaggedCells.every((fc) => fc.isBomb)) {
           this.changeAvatar(3)
           this.destroyInput()
+          this.$refs.timer.stop()
           this.gameOver = true
           // this.gridDisplay.style.pointerEvents = 'none'
-          console.log('happy win you found all the bombs')
+          this.showSnackbar('YAAAY You win!!!')
+        } else {
+          this.showSnackbar('You may need to reposition some flags ? :)')
         }
       }
     },
     endGame() {
+      this.gameStarted = true
+      if (this.$refs.timer.running()) this.$refs.timer.stop()
       this.changeAvatar(2)
       this.gameOver = true
       this.showBombs = true

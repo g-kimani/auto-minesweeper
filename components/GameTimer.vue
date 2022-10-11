@@ -1,6 +1,15 @@
 <template>
   <div>
-    <v-card width="100%" height="100%" tile flat> {{ currentTime }} </v-card>
+    <v-card
+      width="100%"
+      height="100%"
+      tile
+      flat
+      class="d-flex justify-center align-center"
+    >
+      <v-icon>mdi-timer-outline</v-icon>
+      {{ currentTime }}
+    </v-card>
   </div>
 </template>
 
@@ -69,6 +78,9 @@ export default {
       }
 
       return this.overallTime
+    },
+    running() {
+      return this.running
     },
   },
 }

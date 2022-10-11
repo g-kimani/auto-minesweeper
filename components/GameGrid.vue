@@ -48,21 +48,20 @@ export default {
   created() {},
   methods: {
     ...mapActions('grid', ['revealSection', 'toggleFlag']),
+    ...mapActions(['showSnackbar']),
     handleClick(action, x, y) {
       if (this.disabled) {
-        console.log('disabled')
+        this.showSnackbar('Grid Disabled')
         return
       }
 
       if (action === 0) {
         this.$nextTick(() => {
           this.revealSection({ x, y }).then((r) => {
-            console.log(r)
             if (r === 0) {
               this.$emit('hitBomb')
               this.gridKey++
             } else {
-              console.log('click handled')
               this.gridKey++
               this.$emit('gridClicked')
             }
@@ -92,16 +91,5 @@ export default {
 .grid-row {
   display: flex;
   height: 100%;
-}
-.grid-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 20px;
-  min-height: 20px;
-  width: 100%;
-  height: 100%;
-  border: 1px solid black;
-  font-weight: 700;
 }
 </style>

@@ -1,13 +1,15 @@
 <template>
   <div>
     <game-manager />
+    <snackbar-message />
   </div>
 </template>
 
 <script>
 import GameManager from '~/components/GameManager.vue'
+import SnackbarMessage from '~/components/SnackbarMessage.vue'
 export default {
-  components: { GameManager },
+  components: { GameManager, SnackbarMessage },
 }
 </script>
 

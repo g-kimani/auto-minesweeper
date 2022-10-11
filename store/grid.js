@@ -37,11 +37,9 @@ const actions = {
     let isBomb = false
     let isFlagged = false
     dispatch('isBomb', { ...pos }).then((result) => {
-      // console.log(result)
       isBomb = result
     })
     dispatch('isFlagged', { ...pos }).then((result) => {
-      // console.log(result)
       isFlagged = result
     })
     return {
@@ -53,7 +51,6 @@ const actions = {
   },
   isBomb({ state }, pos) {
     return new Promise((resolve) => {
-      // console.log(pos)
       if (!state.cells[pos.x][pos.y]) {
         resolve(false)
       } else {
@@ -76,25 +73,11 @@ const actions = {
       do {
         const x = rng(0, state.size - 1)
         const y = rng(0, state.size - 1)
-        console.log(x, y, placed)
 
         if (!state.cells[x][y].isBomb) {
           commit('SET_CELL_TO_BOMB', { x, y })
           placed++
         }
-        // dispatch('isBomb', { x, y }).then((result) => {
-        //   console.log(result)
-        //   if (!result) {
-        //     commit('SET_CELL_TO_BOMB', { x, y })
-        //     placed++
-        //   }
-        // })
-        // if (dispatch('isBomb', { x, y })) {
-        //   const data = state.cells[x][y]
-        //   data.isBomb = true
-        //   commit('SET_CELL', data)
-        //   placed++
-        // }
       } while (placed < state.bombCount)
       resolve()
     })
@@ -149,19 +132,14 @@ const actions = {
     return new Promise((resolve) => {
       const potentialSearchPos = []
       let bombsAdjacent = 0
-      // console.log(potentialSearchPos)
-      // state.eachAdjacentCell(x, y, (adjCell) => console.log)
       dispatch('eachAdjacentCell', {
         x: payload.x,
         y: payload.y,
         callback: (adjCell) => {
-          console.log(adjCell)
           if (adjCell.isBomb) {
             bombsAdjacent++
           } else {
             potentialSearchPos.push([adjCell.x, adjCell.y])
-            console.log('ha')
-            console.log(potentialSearchPos)
           }
         },
       }).then(() => {
@@ -172,9 +150,7 @@ const actions = {
   },
   async revealSection({ state, dispatch, commit }, pos) {
     const clickedCell = state.cells[pos.x][pos.y]
-    console.log(clickedCell)
     if (clickedCell.isBomb) {
-      console.log('hit bomb')
       return 0
     }
 
@@ -188,17 +164,11 @@ const actions = {
         x,
         y,
         callback: (bombsAdj, nextSearch) => {
-          console.log(bombsAdj, nextSearch)
           visited.push([x, y])
           if (bombsAdj === 0) {
             nextSearch.forEach((s) => {
-              // console.log('search thing')
-              // console.log(s)
-              // console.log(visited)
-              // console.log(searchQueue)
               if (notInList(visited, s) && notInList(searchQueue, s)) {
                 searchQueue.push(s)
-                console.log(searchQueue)
               }
             })
           }
@@ -208,9 +178,7 @@ const actions = {
             property: 'data',
             newValue: bombsAdj,
           }
-          dispatch('setCellAttribute', payload).then(() => {
-            console.log(payload, 'bombs updated')
-          })
+          dispatch('setCellAttribute', payload).then(() => {})
           if (state.cells[x][y].isFlagged) {
             commit('TOGGLE_FLAG', { x, y })
           }
@@ -268,7 +236,6 @@ const mutations = {
       state.flaggedCells = state.flaggedCells.filter(
         (fc) => !(fc.x === payload.x && fc.y === payload.y)
       )
-      // state.flaggedCells.findIndex(fc => )
     }
   },
 }

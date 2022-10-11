@@ -1,15 +1,5 @@
 <template>
   <div class="fill-height">
-    <!-- <v-card
-      :class="classList"
-      flat
-      tile
-      ripple
-      height="100"
-      @click="$emit('click')"
-    >
-      {{ cell.value === 0 ? '0' : '1' }}
-    </v-card> -->
     <v-card
       flat
       tile
